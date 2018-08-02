@@ -253,7 +253,7 @@ Citizen.CreateThread(function()
 	local wallpaper = PurpleTartan
 	
 	RequestStreamedTextureDict(wallpaper)
-	repeat Wait(0) until HasStreamedTextureDictLoaded(wallpaper) end
+	repeat Wait(0) until HasStreamedTextureDictLoaded(wallpaper)
 	
 	PushScaleformMovieFunction(GlobalScaleform, "SET_THEME")
 	PushScaleformMovieFunctionParameterInt(6) -- 1-8
