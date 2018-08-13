@@ -327,6 +327,10 @@ Citizen.CreateThread(function()
 			PushScaleformMovieFunctionParameterInt(GetClockDayOfWeek()) -- DAYS
 			PopScaleformMovieFunctionVoid()
 		
+			PushScaleformMovieFunction(GlobalScaleform, "SET_SIGNAL_STRENGTH")
+			PushScaleformMovieFunctionParameterInt(GetZoneScumminess(GetZoneAtCoords(GetEntityCoords(PlayerPedId()))))
+			PopScaleformMovieFunctionVoid()
+		
 			local ren = GetMobilePhoneRenderId()
 			SetTextRenderId(ren)
 			
