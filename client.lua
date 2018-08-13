@@ -303,13 +303,21 @@ Citizen.CreateThread(function()
 			PushScaleformMovieFunctionParameterInt(0) -- INDEX
 			PopScaleformMovieFunctionVoid()
 			
-			PlaySoundFrontend(-1, "Pull_Out", "Phone_SoundSet_Michael", 1)
-			
 			CreateMobilePhone(phoneId)
 			SetPedConfigFlag(PlayerPedId(), 242, not true)
 			SetPedConfigFlag(PlayerPedId(), 243, not true)
 			SetPedConfigFlag(PlayerPedId(), 244, true)
 			N_0x83a169eabcdb10a2(PlayerPedId(), 4-1)
+			
+			Wait(1)
+			
+			if IsPedRunningMobilePhoneTask(PlayerPedId()) ~= 1 then
+				DestroyMobilePhone()
+				phone = false
+			else
+				PlaySoundFrontend(-1, "Pull_Out", "Phone_SoundSet_Michael", 1)
+			end
+			
 		end
 		
 		if IsPedRunningMobilePhoneTask(PlayerPedId()) == 1 then
