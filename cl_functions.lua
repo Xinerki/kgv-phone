@@ -88,10 +88,10 @@ function math.round(num)
 end
 		
 function NavigateMenu(scaleform, inputControl)
-		PushScaleformMovieFunction(scaleform, "SET_INPUT_EVENT")
-		PushScaleformMovieFunctionParameterInt(inputControl)
-		PopScaleformMovieFunctionVoid()
-		PlaySoundFrontend(-1, "Menu_Navigate", "Phone_SoundSet_Michael", 1)
+	PushScaleformMovieFunction(scaleform, "SET_INPUT_EVENT")
+	PushScaleformMovieFunctionParameterInt(inputControl)
+	PopScaleformMovieFunctionVoid()
+	PlaySoundFrontend(-1, "Menu_Navigate", "Phone_SoundSet_Michael", 1)
 end
 
 currentColumn = 0

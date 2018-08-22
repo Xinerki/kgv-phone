@@ -309,7 +309,7 @@ Citizen.CreateThread(function()
 			SetPedConfigFlag(PlayerPedId(), 244, true)
 			N_0x83a169eabcdb10a2(PlayerPedId(), 4-1)
 			
-			Wait(1)
+			Wait(100)
 			
 			if IsPedRunningMobilePhoneTask(PlayerPedId()) ~= 1 then
 				DestroyMobilePhone()
