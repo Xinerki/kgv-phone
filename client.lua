@@ -5,6 +5,8 @@ messageCount = 0
 
 loadedContacts = {}
 
+pedHeadshots = {}
+
 function OpenApp(app)
 	Citizen.CreateThread(function()
 		currentApp = app
@@ -58,17 +60,27 @@ function OpenApp(app)
 		if app == 3 then -- CONTACTS
 			
 			local players = 0
-			for i=0,31 do
-				if NetworkIsPlayerActive(i) then
-					local handle = RegisterPedheadshot(GetPlayerPed(i))
-					if IsPedheadshotValid(handle) then
-						repeat Wait(0) until IsPedheadshotReady(handle)
+			for i=0,255 do
+				if not pedHeadshots[GetPlayerName(i)] then
+					if NetworkIsPlayerActive(i) then
+						local handle = RegisterPedheadshot(GetPlayerPed(i))
+						if IsPedheadshotValid(handle) then
+							repeat Wait(0) until IsPedheadshotReady(handle)
+						end
+						local txdString = GetPedheadshotTxdString(handle)
+						pedHeadshots[GetPlayerName(i)] = txdString
+						SetContactRaw(GlobalScaleform, i, GetPlayerName(i), txdString)
+						-- contactAmount = contactAmount + 1
+						players = players+1
+						-- print("O HO NO ".. GetPlayerName(i) .." HAS NO PED HEADSHOT, QUICK WE GOTTA MAKE ONE AAAAAAAAREEEEEEEEEEEEEEE")
+						table.insert(loadedContacts, players, {name = GetPlayerName(i), icon = txdString, isPlayer = true})
 					end
-					local txdString = GetPedheadshotTxdString(handle)
+				else
+					local txdString = pedHeadshots[GetPlayerName(i)]
 					SetContactRaw(GlobalScaleform, i, GetPlayerName(i), txdString)
-					-- contactAmount = contactAmount + 1
 					players = players+1
-					table.insert(loadedContacts, players, {name = GetPlayerName(i), icon = txdString})
+					-- print("just taking ".. GetPlayerName(i) .."'s ped headshot from cache tbh")
+					table.insert(loadedContacts, players, {name = GetPlayerName(i), icon = txdString, isPlayer = true})
 				end
 			end
 			
