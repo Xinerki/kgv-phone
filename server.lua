@@ -4,3 +4,10 @@ AddEventHandler('chatMessage', function(source, name, message)
 		CancelEvent()
 	end
 end)
+
+RegisterNetEvent('phone_server:receiveMessage')
+AddEventHandler('phone_server:receiveMessage', function(receiver, name, message, fallback)
+	if receiver == 0 then receiver = fallback end
+	print(name.." sent a message to "..GetPlayerName(receiver)..": \""..message.."\"")
+	TriggerClientEvent('phone:receiveMessage', receiver, name, message)
+end)

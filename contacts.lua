@@ -32,6 +32,10 @@ contacts = {
 		name = "Lester", 
 		icon = "CHAR_LESTER",
 	},
+	NikoBellic = {
+		name = "Niko Bellic", 
+		icon = "CHAR_NIKO",
+	},
 	-- PNG_TEST = {
 		-- name = "PNG_TEST", 
 		-- icon = "CHAR_PNGTEST",

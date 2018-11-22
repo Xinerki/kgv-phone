@@ -13,6 +13,40 @@ function Notification(text,duration)
     end)
 end
 
+function GetPlayerFromName(namePart)
+	for i=1,255 do
+		if NetworkIsPlayerActive(i) then		
+			local playerName = GetPlayerName(i)
+			-- print(playerName.." "..i)
+			if string.find(playerName, namePart) then return GetPlayerPed(i) end
+		end
+	end
+end
+
+function ReceiveMessage(sender, message)
+	if not pedHeadshots[sender] then
+		handle = RegisterPedheadshot(GetPlayerFromName(sender))
+		if IsPedheadshotValid(handle) then
+			repeat Wait(0) until IsPedheadshotReady(handle)
+			txdString = GetPedheadshotTxdString(handle)
+		else
+			txdString = "CHAR_DEFAULT" -- something went wrong!
+		end
+	else
+		txdString = pedHeadshots[sender]
+	end
+	SetNotificationTextEntry("STRING")
+	AddTextComponentString(message)
+	SetNotificationMessage(txdString, txdString, true, 2, sender, "Private Message")
+	PlaySoundFrontend(-1, "Phone_Generic_Key_01", "HUD_MINIGAME_SOUNDSET", 0)
+	
+	AddMessage(GlobalScaleform, messageCount, sender, message)
+	messageCount = messageCount + 1
+end
+
+RegisterNetEvent('phone:receiveMessage')
+AddEventHandler('phone:receiveMessage', ReceiveMessage)
+
 phone = false
 phoneId = 0
 
@@ -23,24 +57,24 @@ phones = {
 [4] = "Prologue"
 }
 
-iFruitDefault = "Phone_Wallpaper_ifruitdefault"
-BadgerDefault = "Phone_Wallpaper_badgerdefault"
-Bittersweet = "Phone_Wallpaper_bittersweet_b"
-PurpleGlow = "Phone_Wallpaper_purpleglow"
-GreenSquares = "Phone_Wallpaper_greensquares"
+iFruitDefault = 	"Phone_Wallpaper_ifruitdefault"
+BadgerDefault = 	"Phone_Wallpaper_badgerdefault"
+Bittersweet = 		"Phone_Wallpaper_bittersweet_b"
+PurpleGlow = 		"Phone_Wallpaper_purpleglow"
+GreenSquares = 		"Phone_Wallpaper_greensquares"
 OrangeHerringBone = "Phone_Wallpaper_orangeherringbone"
-OrangeHalftone = "Phone_Wallpaper_orangehalftone"
-GreenTriangles = "Phone_Wallpaper_greentriangles"
-GreenShards = "Phone_Wallpaper_greenshards"
-BlueAngles = "Phone_Wallpaper_blueangles"
-BlueShards = "Phone_Wallpaper_blueshards"
-BlueTriangles = "Phone_Wallpaper_bluetriangles"
-BlueCircles = "Phone_Wallpaper_bluecircles"
-Diamonds = "Phone_Wallpaper_diamonds"
-GreenGlow = "Phone_Wallpaper_greenglow"
-Orange8Bit = "Phone_Wallpaper_orange8bit"
-OrangeTriangles = "Phone_Wallpaper_orangetriangles"
-PurpleTartan = "Phone_Wallpaper_purpletartan"
+OrangeHalftone = 	"Phone_Wallpaper_orangehalftone"
+GreenTriangles = 	"Phone_Wallpaper_greentriangles"
+GreenShards = 		"Phone_Wallpaper_greenshards"
+BlueAngles = 		"Phone_Wallpaper_blueangles"
+BlueShards = 		"Phone_Wallpaper_blueshards"
+BlueTriangles = 	"Phone_Wallpaper_bluetriangles"
+BlueCircles = 		"Phone_Wallpaper_bluecircles"
+Diamonds = 			"Phone_Wallpaper_diamonds"
+GreenGlow = 		"Phone_Wallpaper_greenglow"
+Orange8Bit = 		"Phone_Wallpaper_orange8bit"
+OrangeTriangles = 	"Phone_Wallpaper_orangetriangles"
+PurpleTartan =		"Phone_Wallpaper_purpletartan"
 
 RegisterNetEvent('phone:phone')
 AddEventHandler('phone:phone', function(message)		
@@ -189,7 +223,7 @@ function AddMessage(scaleform, index, email, messageTopic)
 	
 	PushScaleformMovieFunctionParameterInt(index)
 	
-	PushScaleformMovieFunctionParameterInt(1)
+	PushScaleformMovieFunctionParameterInt(0)
 	
 	PushScaleformMovieFunctionParameterInt(0)
 	
