@@ -129,6 +129,8 @@ function OpenApp(app)
 							-- local receiver = GetPlayerServerId(NetworkGetPlayerIndexFromPed(GetPlayerFromName(loadedContacts[currentRow+1].name))) -- oh my..
 							local receiver = GetPlayerServerId(loadedContacts[currentRow+1].playerIndex)
 							TriggerServerEvent("phone_server:receiveMessage", receiver, GetPlayerName(PlayerId()), message, GetPlayerServerId(PlayerId()))
+							AddMessage(GlobalScaleform, messageCount, loadedContacts[currentRow+1].name, message, true)
+							messageCount = messageCount + 1
 						elseif UpdateOnscreenKeyboard() == 2 then
 							Notification("Message cancelled.", 5000)
 						end
@@ -369,7 +371,7 @@ Citizen.CreateThread(function()
 			PushScaleformMovieFunction(GlobalScaleform, "SET_TITLEBAR_TIME")
 			PushScaleformMovieFunctionParameterInt(GetClockHours()) -- HOURS
 			PushScaleformMovieFunctionParameterInt(GetClockMinutes()) -- MINUTES
-			PushScaleformMovieFunctionParameterInt(GetClockDayOfWeek()) -- DAYS
+			PushScaleformMovieFunctionParameterString(days[GetClockDayOfWeek()]) -- DAYS
 			PopScaleformMovieFunctionVoid()
 
 			PushScaleformMovieFunction(GlobalScaleform, "SET_SIGNAL_STRENGTH")

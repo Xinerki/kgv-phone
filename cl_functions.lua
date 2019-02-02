@@ -40,7 +40,7 @@ function ReceiveMessage(sender, message)
 	SetNotificationMessage(txdString, txdString, true, 2, sender, "Private Message")
 	PlaySoundFrontend(-1, "Phone_Generic_Key_01", "HUD_MINIGAME_SOUNDSET", 0)
 	
-	AddMessage(GlobalScaleform, messageCount, sender, message)
+	AddMessage(GlobalScaleform, messageCount, sender, message, false)
 	messageCount = messageCount + 1
 end
 
@@ -55,6 +55,16 @@ phones = {
 [1] = "Trevor's",
 [2] = "Franklin's",
 [4] = "Prologue"
+}
+
+days = {
+[1] = "Mon",
+[2] = "Tue",
+[3] = "Wed",
+[4] = "Thu",
+[5] = "Fri",
+[6] = "Sat",
+[7] = "Sun"
 }
 
 iFruitDefault = 	"Phone_Wallpaper_ifruitdefault"
@@ -217,13 +227,17 @@ function SetSoftKeys(scaleform, index, icon, r, g, b)
 	-- PopScaleformMovieFunctionVoid()
 end
 
-function AddMessage(scaleform, index, email, messageTopic)
+function AddMessage(scaleform, index, email, messageTopic, sending)
 	PushScaleformMovieFunction(scaleform, "SET_DATA_SLOT")
 	PushScaleformMovieFunctionParameterInt(8)
 	
 	PushScaleformMovieFunctionParameterInt(index)
 	
-	PushScaleformMovieFunctionParameterInt(0)
+	if sending == false then
+		PushScaleformMovieFunctionParameterInt(0)
+	else
+		PushScaleformMovieFunctionParameterInt(4)
+	end
 	
 	PushScaleformMovieFunctionParameterInt(0)
 	
