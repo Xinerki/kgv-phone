@@ -164,6 +164,89 @@ function OpenApp(app)
 				end
 			end
 		end
+		
+		if app == 5 then -- MOBILE RADIO
+			PushScaleformMovieFunction(GlobalScaleform, "DISPLAY_VIEW")
+			PushScaleformMovieFunctionParameterInt(20) -- MENU PAGE
+			PushScaleformMovieFunctionParameterInt(0) -- INDEX
+			PopScaleformMovieFunctionVoid()			
+			while true do
+				Wait(0)
+
+				if (IsControlJustPressed(3, 172)) then -- UP
+					-- NavigateMenu(GlobalScaleform, 1)
+					MoveFinger(1)
+					currentRow = currentRow - 1
+					SetRadioToStationIndex((GetPlayerRadioStationIndex() + 1) % MaxRadioStationIndex())
+				end
+
+				if (IsControlJustPressed(3, 173)) then -- DOWN
+					-- NavigateMenu(GlobalScaleform, 3)
+					MoveFinger(2)
+					currentRow = currentRow + 1
+					SetRadioToStationIndex((GetPlayerRadioStationIndex() - 1) % MaxRadioStationIndex())
+				end
+
+				if (IsControlJustPressed(3, 176)) then -- SELECT
+					MoveFinger(5)
+					PlaySoundFrontend(-1, "Menu_Accept", "Phone_SoundSet_Michael", 1)
+					if IsMobilePhoneRadioActive() == false then
+						SetAudioFlag("MobileRadioInGame", 1)
+						SetMobilePhoneRadioState(1)
+						SetUserRadioControlEnabled(false)
+					else
+						SetAudioFlag("MobileRadioInGame", 0)
+						SetMobilePhoneRadioState(0)
+						SetUserRadioControlEnabled(true)
+					end
+				end
+				
+				local ren = GetMobilePhoneRenderId()
+				SetTextRenderId(ren)
+				
+				if IsMobilePhoneRadioActive() == false then
+					SetTextFont(0)
+					SetTextScale(0.0, 0.45)
+					SetTextColour(255, 255, 255, 255)
+					SetTextDropshadow(0, 0, 0, 0, 255)
+					SetTextEdge(2, 0, 0, 0, 150)
+					SetTextDropShadow()
+					SetTextOutline()
+					SetTextEntry("STRING")
+					SetTextCentre(1)
+					AddTextComponentString("~r~MOBILE RADIO OFF~w~~n~~n~TAP TO ~g~TURN ON ~w~MOBILE RADIO")
+					DrawText(0.5, 0.24)
+				else
+					SetTextFont(0)
+					SetTextScale(0.0, 0.4)
+					SetTextColour(255, 255, 255, 255)
+					SetTextDropshadow(0, 0, 0, 0, 255)
+					SetTextEdge(2, 0, 0, 0, 150)
+					SetTextDropShadow()
+					SetTextOutline()
+					SetTextEntry("STRING")
+					SetTextCentre(1)
+					AddTextComponentString("^~n~CURRENT RADIO:~n~~g~"..GetLabelText(GetPlayerRadioStationName()).."~w~~n~V~n~~n~TAP TO ~r~TURN OFF ~w~MOBILE RADIO")
+					DrawText(0.5, 0.235)
+				end
+
+				SetTextRenderId(GetDefaultScriptRendertargetRenderId())
+
+				if IsControlJustReleased(3, 177) then -- BACK
+					PlaySoundFrontend(-1, "Menu_Back", "Phone_SoundSet_Michael", 1)
+					PushScaleformMovieFunction(GlobalScaleform, "DISPLAY_VIEW")
+					PushScaleformMovieFunctionParameterInt(1) -- MENU PAGE
+					PushScaleformMovieFunctionParameterInt(3) -- INDEX
+					PopScaleformMovieFunctionVoid()
+					Wait(500)
+					currentColumn = 0
+					currentRow = 1
+					currentIndex = 4
+					currentApp = 1
+					return
+				end
+			end
+		end
 
 		if app == 9 then -- CAMERA
 			frontCam = false
@@ -277,12 +360,15 @@ Citizen.CreateThread(function()
 	SetHomeMenuApp(GlobalScaleform, 0, 2, "Texts")
 	SetHomeMenuApp(GlobalScaleform, 1, 5, "Contacts")
 	SetHomeMenuApp(GlobalScaleform, 2, 12, "To-Do List")
-	SetHomeMenuApp(GlobalScaleform, 3, 14, "Player List")
+	SetHomeMenuApp(GlobalScaleform, 3, 59, "Mobile Radio")
 	SetHomeMenuApp(GlobalScaleform, 4, 6, "Eyefind")
 	SetHomeMenuApp(GlobalScaleform, 5, 8, "Unknown App")
 	SetHomeMenuApp(GlobalScaleform, 6, 24, "Settings")
 	SetHomeMenuApp(GlobalScaleform, 7, 1, "Snapmatic")
 	SetHomeMenuApp(GlobalScaleform, 8, 57, "SecuroServ")
+	
+	-- 27 is an interesting [!] icon
+	-- 42 is Trackify, should work
 
 	-- for i,v in pairs(contacts) do
 		-- SetContactRaw(GlobalScaleform, contactAmount, v.name, v.icon)
