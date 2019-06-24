@@ -1,7 +1,7 @@
 # Phone!
 Phone using original scaleforms on [FiveM](https://github.com/citizenfx/fivem), also using render targets, but also making your character hold a real phone (fancy flags!)
 
-SOON: Contacts can be expanded using external resources, which can have completely unique behaviour upon calling said contact. Another planned feature is messaging other players... Yes.
+SOON: Contacts can be expanded using external resources, which can have completely unique behaviour upon calling said contact.
 
 # Usage
 Start the resource, simple enough.
@@ -18,7 +18,7 @@ If you want to contribute to the resource, do so with caution, as the code is a 
 - [x] Text history
 - [x] Loading contact images from png links (NOVELTY)
 - [ ] Contact calling
-- [ ] Contact system (NOT PLAYERS) to allow calling and executing functions defined on contacts
+- [ ] Contact interaction system (NOT PLAYERS) to allow calling and executing functions defined on contacts
 - [ ] Exported functions for contact usage
 - [ ] Basic animations
 - [ ] Settings app and phone customization
