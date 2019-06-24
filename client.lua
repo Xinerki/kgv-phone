@@ -338,8 +338,8 @@ function HandleInput(scaleform)
 			PlaySoundFrontend(-1, "Menu_Accept", "Phone_SoundSet_Michael", 1)
 			OpenApp(currentIndex+1)
 		end
-
-		if IsControlJustReleased(3, 177) and IsPedRunningMobilePhoneTask(PlayerPedId()) == 1 then -- CANCEL / CLOSE PHONE
+-- and IsPedRunningMobilePhoneTask(PlayerPedId()) == 1
+		if IsControlJustReleased(3, 177)  then -- CANCEL / CLOSE PHONE
 			PlaySoundFrontend(-1, "Put_Away", "Phone_SoundSet_Michael", 1)
 			DestroyMobilePhone()
 			phone = false
@@ -352,6 +352,7 @@ contactAmount = 0
 Citizen.CreateThread(function()
 
 	DestroyMobilePhone()
+	phone = false
 	GlobalScaleform = RequestScaleformMovie("cellphone_ifruit")
 	while not HasScaleformMovieLoaded(GlobalScaleform) do
 		Citizen.Wait(0)
@@ -416,7 +417,8 @@ Citizen.CreateThread(function()
 
 	while true do
 	Wait(0)
-		if IsPedRunningMobilePhoneTask(PlayerPedId()) ~= 1 and IsControlJustReleased(1, 27) then
+	-- IsPedRunningMobilePhoneTask(PlayerPedId()) ~= 1 and
+		if phone == false and IsControlJustReleased(1, 27) then
 			Phone(55,-27) -- CREATING PHONE
 			currentColumn = 0
 			currentRow = 0
@@ -429,6 +431,7 @@ Citizen.CreateThread(function()
 			PopScaleformMovieFunctionVoid()
 
 			CreateMobilePhone(phoneId)
+			phone = true
 			SetPedConfigFlag(PlayerPedId(), 242, not true)
 			SetPedConfigFlag(PlayerPedId(), 243, not true)
 			SetPedConfigFlag(PlayerPedId(), 244, true)
@@ -436,16 +439,16 @@ Citizen.CreateThread(function()
 
 			Wait(100)
 
-			if IsPedRunningMobilePhoneTask(PlayerPedId()) ~= 1 then
-				DestroyMobilePhone()
-				phone = false
-			else
+			-- if IsPedRunningMobilePhoneTask(PlayerPedId()) ~= 1 then
+				-- DestroyMobilePhone()
+				-- phone = false
+			-- else
 				PlaySoundFrontend(-1, "Pull_Out", "Phone_SoundSet_Michael", 1)
-			end
+			-- end
 
 		end
-
-		if IsPedRunningMobilePhoneTask(PlayerPedId()) == 1 then
+-- IsPedRunningMobilePhoneTask(PlayerPedId()) == 1
+		if phone == true then
 			HandleInput(GlobalScaleform)
 
 			if GetFollowPedCamViewMode() == 4 then
