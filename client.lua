@@ -64,7 +64,7 @@ function OpenApp(app)
 		if app == 3 then -- CONTACTS
 
 			local players = 0
-			for i=0,255 do
+			for i=0,128 do
 				if not pedHeadshots[GetPlayerName(i)] then
 					if NetworkIsPlayerActive(i) then
 						local handle = RegisterPedheadshot(GetPlayerPed(i))
@@ -75,11 +75,12 @@ function OpenApp(app)
 							txdString = "CHAR_DEFAULT" -- something went wrong!
 						end
 						pedHeadshots[GetPlayerName(i)] = txdString
-						SetContactRaw(GlobalScaleform, i, GetPlayerName(i), txdString)
+						SetContactRaw(GlobalScaleform, i-127, GetPlayerName(i), txdString)
 						-- contactAmount = contactAmount + 1
 						players = players+1
 						-- print("O HO NO ".. GetPlayerName(i) .." HAS NO PED HEADSHOT, QUICK WE GOTTA MAKE ONE AAAAAAAAREEEEEEEEEEEEEEE")
 						table.insert(loadedContacts, players, {name = GetPlayerName(i), icon = txdString, isPlayer = true, playerIndex = i})
+						print(i)
 					end
 				else
 					local txdString = pedHeadshots[GetPlayerName(i)]
@@ -121,13 +122,14 @@ function OpenApp(app)
 					PlaySoundFrontend(-1, "Menu_Accept", "Phone_SoundSet_Michael", 1)
 					if loadedContacts[currentRow+1].isPlayer or false then
 						N_0x3ed1438c1f5c6612(2)
-						DisplayOnscreenKeyboard(6, "FMMC_KEY_TIP8", "", "", "", "", "", 60)
+						DisplayOnscreenKeyboard(1, "FMMC_KEY_TIP8", "", "", "", "", "", 60)
 						repeat Wait(0) until UpdateOnscreenKeyboard() ~= 0
 						if UpdateOnscreenKeyboard() == 1 then
 							local message = GetOnscreenKeyboardResult()
 							-- ReceiveMessage(PlayerPedId(), message)
 							-- local receiver = GetPlayerServerId(NetworkGetPlayerIndexFromPed(GetPlayerFromName(loadedContacts[currentRow+1].name))) -- oh my..
 							local receiver = GetPlayerServerId(loadedContacts[currentRow+1].playerIndex)
+							print("receiver = "..loadedContacts[currentRow+1].playerIndex)
 							TriggerServerEvent("phone_server:receiveMessage", receiver, GetPlayerName(PlayerId()), message, GetPlayerServerId(PlayerId()))
 							AddMessage(GlobalScaleform, messageCount, loadedContacts[currentRow+1].name, message, true)
 							messageCount = messageCount + 1
@@ -247,6 +249,142 @@ function OpenApp(app)
 				end
 			end
 		end
+		
+		if app == 6 then -- BROWSER
+			-- local resX, resY = GetActiveScreenResolution()
+			-- local webX, webY = 1280, 900
+			local webX, webY = 640, 450
+			
+			RequestStreamedTextureDict( "desktop_pc" )
+			
+			local cursorX = webX / 2
+			local cursorY = webY / 2
+			local cursorSpeed = 15
+			local scrollSpeed = 150
+			
+			PushScaleformMovieFunction(GlobalScaleform, "DISPLAY_VIEW")
+			PushScaleformMovieFunctionParameterInt(20) -- MENU PAGE
+			PushScaleformMovieFunctionParameterInt(0) -- INDEX
+			PopScaleformMovieFunctionVoid()			
+		
+			N_0x3ed1438c1f5c6612(2)
+			DisplayOnscreenKeyboard(0, "FMMC_KEY_TIP8", "", message or "", "", "", "", 60)
+			repeat Wait(0) until UpdateOnscreenKeyboard() ~= 0
+			if UpdateOnscreenKeyboard() == 1 then
+				message = GetOnscreenKeyboardResult()
+			end
+			
+			SetPhoneLean(true)
+			SetMobilePhoneRotation(-90.0, 0.0, 90.0)
+			
+			while true do
+			
+				Wait(0)
+				
+				if not duiObj and not txd then
+					txd = CreateRuntimeTxd('kgv_phone')
+					duiObj = CreateDui(message, webX, webY)
+				
+					_G.duiObj = duiObj
+
+					dui = GetDuiHandle(duiObj)
+					tx = CreateRuntimeTextureFromDuiHandle(txd, 'kgv_phone_tex', dui)
+				end
+				
+				if (IsControlPressed(3, 172)) then -- UP
+					MoveFinger(1)
+					cursorX = cursorX + cursorSpeed
+				end
+
+				if (IsControlPressed(3, 173)) then -- DOWN
+					MoveFinger(2)
+					cursorX = cursorX - cursorSpeed
+				end
+
+				if (IsControlPressed(3, 174)) then -- LEFT
+					MoveFinger(3)
+					cursorY = cursorY - cursorSpeed
+				end
+
+				if (IsControlPressed(3, 175)) then -- RIGHT
+					MoveFinger(4)
+					cursorY = cursorY + cursorSpeed
+				end
+
+				if (IsControlJustPressed(3, 180)) then -- SCROLL DOWN
+					MoveFinger(2)
+					SendDuiMouseWheel(duiObj, -scrollSpeed, 0.0)
+				end
+
+				if (IsControlJustPressed(3, 181)) then -- SCROLL DOWN
+					MoveFinger(2)
+					SendDuiMouseWheel(duiObj, scrollSpeed, 0.0)
+				end
+
+				if (IsControlJustPressed(3, 176)) then -- PRESS DOWN
+					MoveFinger(5)
+					PlaySoundFrontend(-1, "Menu_Accept", "Phone_SoundSet_Michael", 1)
+					SendDuiMouseDown(duiObj, 'left')
+				end
+
+				if (IsControlJustReleased(3, 176)) then -- PRESS UP
+					MoveFinger(5)
+					-- PlaySoundFrontend(-1, "Menu_Accept", "Phone_SoundSet_Michael", 1)
+					SendDuiMouseUp(duiObj, 'left')
+					SetPhoneLean(true)
+				end
+				
+				-- SendDuiMouseWheel
+				-- local FovControl = GetDisabledControlNormal(0, 39)
+				
+				cursorX = math.floor(math.min(math.max(cursorX, 0.0), webY))
+				cursorY = math.floor(math.min(math.max(cursorY, 0.0), webX))
+				
+				SendDuiMouseMove(duiObj, cursorY, webY-cursorX)
+				
+				-- SetTextFont(0)
+				-- SetTextProportional(1)
+				-- SetTextScale(0.0, 0.55)
+				-- SetTextColour(255, 255, 255, 255)
+				-- SetTextDropshadow(0, 0, 0, 0, 255)
+				-- SetTextEdge(2, 0, 0, 0, 150)
+				-- SetTextDropShadow()
+				-- SetTextOutline()
+				-- SetTextEntry("STRING")
+				-- SetTextCentre(1)
+				-- AddTextComponentString("scrollY = " .. scrollY)
+				-- DrawText(0.5, 0.0)
+				
+				local ren = GetMobilePhoneRenderId()
+				SetTextRenderId(ren)
+				
+				DrawRect(0.5, 0.5, 1.0, 1.0, 255, 255, 255, 255)
+				-- DrawSprite(textureDict, textureName, screenX, screenY, width, height, heading, red, green, blue, alpha)
+				DrawSprite('kgv_phone', 'kgv_phone_tex', 0.5, 0.5, 1.0, 1.0, 90.0, 255, 255, 255, 255)
+				DrawSprite("desktop_pc", "arrow", (cursorX-16)/webY, (cursorY+16)/webX, 0.1, 0.05, 90.0, 255, 255, 255, 255)
+
+				SetTextRenderId(GetDefaultScriptRendertargetRenderId())
+
+				if IsControlJustReleased(3, 177) then -- BACK
+					DestroyDui(duiObj)
+					duiObj = nil
+					txd = nil
+					PlaySoundFrontend(-1, "Menu_Back", "Phone_SoundSet_Michael", 1)
+					PushScaleformMovieFunction(GlobalScaleform, "DISPLAY_VIEW")
+					PushScaleformMovieFunctionParameterInt(1) -- MENU PAGE
+					PushScaleformMovieFunctionParameterInt(4) -- INDEX
+					PopScaleformMovieFunctionVoid()
+					SetPhoneLean(false)
+					SetMobilePhoneRotation(-90.0, 0.0, 0.0)
+					Wait(500)
+					currentColumn = 1
+					currentRow = 1
+					currentIndex = 1
+					currentApp = 1
+					return
+				end
+			end
+		end
 
 		if app == 9 then -- CAMERA
 			frontCam = false
@@ -270,10 +408,11 @@ function OpenApp(app)
 				-- rz = (z+rotz)
 				-- SetEntityRotation(PlayerPedId(), x,y,rz+180.0)
 
-				if (IsControlJustPressed(3, 172)) then -- UP
-					frontCam = not false
+				if IsControlJustPressed(3, 172) then -- UP
+					frontCam = not frontCam
 					CellFrontCamActivate(frontCam)
 				end
+				
 				if IsControlJustReleased(3, 177) then -- BACK
 					PlaySoundFrontend(-1, "Menu_Back", "Phone_SoundSet_Michael", 1)
 					PushScaleformMovieFunction(GlobalScaleform, "DISPLAY_VIEW")
@@ -341,6 +480,7 @@ function HandleInput(scaleform)
 -- and IsPedRunningMobilePhoneTask(PlayerPedId()) == 1
 		if IsControlJustReleased(3, 177)  then -- CANCEL / CLOSE PHONE
 			PlaySoundFrontend(-1, "Put_Away", "Phone_SoundSet_Michael", 1)
+			DisableControlAction(2, 21, false)
 			DestroyMobilePhone()
 			phone = false
 		end
@@ -418,7 +558,7 @@ Citizen.CreateThread(function()
 	while true do
 	Wait(0)
 	-- IsPedRunningMobilePhoneTask(PlayerPedId()) ~= 1 and
-		if phone == false and IsControlJustReleased(1, 27) then
+		if phone == false and IsControlJustReleased(1, 27) then -- OPEN PHONE
 			Phone(55,-27) -- CREATING PHONE
 			currentColumn = 0
 			currentRow = 0
@@ -436,8 +576,10 @@ Citizen.CreateThread(function()
 			SetPedConfigFlag(PlayerPedId(), 243, not true)
 			SetPedConfigFlag(PlayerPedId(), 244, true)
 			N_0x83a169eabcdb10a2(PlayerPedId(), 4-1)
+			
+			DisableControlAction(2, 21, true)
 
-			Wait(100)
+			-- Wait(100)
 
 			-- if IsPedRunningMobilePhoneTask(PlayerPedId()) ~= 1 then
 				-- DestroyMobilePhone()

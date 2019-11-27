@@ -8,6 +8,6 @@ end)
 RegisterNetEvent('phone_server:receiveMessage')
 AddEventHandler('phone_server:receiveMessage', function(receiver, name, message, fallback)
 	if receiver == 0 then receiver = fallback end
-	print(name.." sent a message to "..GetPlayerName(receiver)..": \""..message.."\"")
+	print(name.." [" ..tostring(source).."] sent a message to "..GetPlayerName(receiver).." ["..tostring(receiver).."]: \""..message.."\"")
 	TriggerClientEvent('phone:receiveMessage', receiver, name, message)
 end)
