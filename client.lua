@@ -65,29 +65,33 @@ function OpenApp(app)
 
 			local players = 0
 			for i=0,128 do
-				if not pedHeadshots[GetPlayerName(i)] then
-					if NetworkIsPlayerActive(i) then
-						local handle = RegisterPedheadshot(GetPlayerPed(i))
-						if IsPedheadshotValid(handle) then
-							repeat Wait(0) until IsPedheadshotReady(handle)
-							txdString = GetPedheadshotTxdString(handle)
-						else
-							txdString = "CHAR_DEFAULT" -- something went wrong!
+				-- print(NetworkIsPlayerActive(i))
+				if GetPlayerPed(i) ~= PlayerPedId() then
+					if not pedHeadshots[GetPlayerName(i)] then
+						if NetworkIsPlayerActive(i) then
+							-- print(i.." | "..GetPlayerName(i))
+							local handle = RegisterPedheadshot(GetPlayerPed(i))
+							if IsPedheadshotValid(handle) then
+								repeat Wait(0) until IsPedheadshotReady(handle)
+								txdString = GetPedheadshotTxdString(handle)
+							else
+								txdString = "CHAR_DEFAULT" -- something went wrong!
+							end
+							pedHeadshots[GetPlayerName(i)] = txdString
+							-- SetContactRaw(GlobalScaleform, i-127, GetPlayerName(i), txdString)
+							SetContactRaw(GlobalScaleform, players, GetPlayerName(i), txdString)
+							-- contactAmount = contactAmount + 1
+							players = players+1
+							-- print("O HO NO ".. GetPlayerName(i) .." HAS NO PED HEADSHOT, QUICK WE GOTTA MAKE ONE AAAAAAAAREEEEEEEEEEEEEEE")
+							table.insert(loadedContacts, players, {name = GetPlayerName(i), icon = txdString, isPlayer = true, playerIndex = i})
 						end
-						pedHeadshots[GetPlayerName(i)] = txdString
-						SetContactRaw(GlobalScaleform, i-127, GetPlayerName(i), txdString)
-						-- contactAmount = contactAmount + 1
+					else
+						local txdString = pedHeadshots[GetPlayerName(i)]
+						SetContactRaw(GlobalScaleform, players, GetPlayerName(i), txdString)
 						players = players+1
-						-- print("O HO NO ".. GetPlayerName(i) .." HAS NO PED HEADSHOT, QUICK WE GOTTA MAKE ONE AAAAAAAAREEEEEEEEEEEEEEE")
+						-- print("just taking ".. GetPlayerName(i) .."'s ped headshot from cache tbh")
 						table.insert(loadedContacts, players, {name = GetPlayerName(i), icon = txdString, isPlayer = true, playerIndex = i})
-						print(i)
 					end
-				else
-					local txdString = pedHeadshots[GetPlayerName(i)]
-					SetContactRaw(GlobalScaleform, i, GetPlayerName(i), txdString)
-					players = players+1
-					-- print("just taking ".. GetPlayerName(i) .."'s ped headshot from cache tbh")
-					table.insert(loadedContacts, players, {name = GetPlayerName(i), icon = txdString, isPlayer = true, playerIndex = i})
 				end
 			end
 
@@ -122,7 +126,7 @@ function OpenApp(app)
 					PlaySoundFrontend(-1, "Menu_Accept", "Phone_SoundSet_Michael", 1)
 					if loadedContacts[currentRow+1].isPlayer or false then
 						N_0x3ed1438c1f5c6612(2)
-						DisplayOnscreenKeyboard(1, "FMMC_KEY_TIP8", "", "", "", "", "", 60)
+						DisplayOnscreenKeyboard(0, "FMMC_KEY_TIP8", "", "", "", "", "", 60)
 						repeat Wait(0) until UpdateOnscreenKeyboard() ~= 0
 						if UpdateOnscreenKeyboard() == 1 then
 							local message = GetOnscreenKeyboardResult()
@@ -316,7 +320,7 @@ function OpenApp(app)
 					SendDuiMouseWheel(duiObj, -scrollSpeed, 0.0)
 				end
 
-				if (IsControlJustPressed(3, 181)) then -- SCROLL DOWN
+				if (IsControlJustPressed(3, 181)) then -- SCROLL UP
 					MoveFinger(2)
 					SendDuiMouseWheel(duiObj, scrollSpeed, 0.0)
 				end
