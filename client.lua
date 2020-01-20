@@ -72,8 +72,12 @@ function OpenApp(app)
 							-- print(i.." | "..GetPlayerName(i))
 							local handle = RegisterPedheadshot(GetPlayerPed(i))
 							if IsPedheadshotValid(handle) then
+								BeginTextCommandBusyspinnerOn("STRING")
+								AddTextComponentString("LOADING "..GetPlayerName(i):upper().."'s HEADSHOT")
+								EndTextCommandBusyspinnerOn(1)
 								repeat Wait(0) until IsPedheadshotReady(handle)
 								txdString = GetPedheadshotTxdString(handle)
+								BusyspinnerOff()
 							else
 								txdString = "CHAR_DEFAULT" -- something went wrong!
 							end
@@ -256,6 +260,7 @@ function OpenApp(app)
 		
 		if app == 6 then -- BROWSER
 			-- local resX, resY = GetActiveScreenResolution()
+			-- local webX, webY = 1920, 1080
 			-- local webX, webY = 1280, 900
 			local webX, webY = 640, 450
 			
@@ -415,6 +420,17 @@ function OpenApp(app)
 				if IsControlJustPressed(3, 172) then -- UP
 					frontCam = not frontCam
 					CellFrontCamActivate(frontCam)
+				end
+
+				if (IsControlJustPressed(3, 176)) then -- SELECT
+					MoveFinger(5)
+					PlaySoundFrontend(-1, "Menu_Accept", "Phone_SoundSet_Michael", 1)
+					TakePhoto()
+					if (WasPhotoTaken() and SavePhoto(-1)) then
+						-- SetLoadingPromptTextEntry("CELL_278")
+						-- ShowLoadingPrompt(1)
+						ClearPhoto()
+					end
 				end
 				
 				if IsControlJustReleased(3, 177) then -- BACK

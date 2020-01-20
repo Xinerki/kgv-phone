@@ -1,4 +1,9 @@
 
+TakePhoto = N_0xa67c35c56eb1bd9d
+WasPhotoTaken = N_0x0d6ca79eeebd8ca3
+SavePhoto = N_0x3dec726c25a11bac
+ClearPhoto = N_0xd801cc02177fa3f1
+
 function chatMessage(msg)
 	TriggerEvent('chatMessage', '', {0, 0, 0}, msg)
 end
