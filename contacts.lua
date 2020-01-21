@@ -22,10 +22,10 @@ contacts = {
 		name = "LinusTechTip", 
 		icon = "CHAR_LINUS",
 	},
-	Cole = {
-		name = "Cole", 
-		icon = "CHAR_FILMNOIR",
-	},
+	-- Cole = {
+		-- name = "Cole", 
+		-- icon = "CHAR_FILMNOIR",
+	-- },
 	-- XinVoliteer = {
 		-- name = "Xin Voliteer", 
 		-- icon = "CHAR_XIN",

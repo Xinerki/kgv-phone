@@ -404,6 +404,16 @@ function OpenApp(app)
 			-- Wait(500)
 			CellCamActivate(true, true)
 			CellFrontCamActivate(frontCam)
+			
+			local xOffset = 0.0
+			local yOffset = 1.0
+			local roll = 0.0
+			local distance = 1.0
+			
+			local headY = 0.0
+			local headRoll = 0.0
+			local headHeight = 0.0
+			
 			while true do Wait(0)
 				HideHudComponentThisFrame(7)
 				HideHudComponentThisFrame(8)
@@ -411,6 +421,40 @@ function OpenApp(app)
 				HideHudComponentThisFrame(6)
 				HideHudComponentThisFrame(19)
 				HideHudAndRadarThisFrame()
+				
+				local mouseX = GetDisabledControlNormal(0, 1) / 2.0
+				local mouseY = -GetDisabledControlNormal(0, 2) / 2.0
+				
+				-- local ForwardControl = -GetDisabledControlNormal(0, 31) / 12.0
+				local LeftRightControl = GetDisabledControlNormal(0, 30) / 12.0
+				local FovControl = GetDisabledControlNormal(0, 39) / 5.0
+				-- local RollControl = (-GetDisabledControlNormal(0, 44) + GetDisabledControlNormal(0, 38)) / 12.0
+				
+				if IsControlPressed(0, 179) and frontCam == true then -- Hold Spacebar to adjust camera position
+					DisableControlAction(0, 1, true)
+					DisableControlAction(0, 2, true)
+					
+					xOffset = math.clamp(xOffset + mouseX, 0.0, 1.0)
+					yOffset = math.clamp(yOffset + mouseY, 0.0, 2.0)
+					roll = math.clamp(roll + LeftRightControl, -1.0, 1.0)
+					-- distance = math.clamp(distance + FovControl, 0.0, 1.0)
+				elseif IsControlPressed(0, 185) and frontCam == true then -- Hold F to adjust head rotation
+					DisableControlAction(0, 1, true)
+					DisableControlAction(0, 2, true)
+					
+					headY = math.clamp(headY + mouseX, -1.0, 1.0)
+					headRoll = math.clamp(headRoll + LeftRightControl, -1.0, 1.0)
+					headHeight = math.clamp(headHeight + mouseY, -1.0, 1.0)
+				end
+				
+				CellCamSetHorizontalOffset(xOffset)
+				CellCamSetVerticalOffset(yOffset)
+				CellCamSetRoll(roll)
+				CellCamSetDistance(distance)
+				
+				CellCamSetHeadY(headY)
+				CellCamSetHeadRoll(headRoll)
+				CellCamSetHeadHeight(headHeight)
 
 				-- local x,y,z=table.unpack(GetEntityRotation(PlayerPedId()))
 				-- local rotz=GetGameplayCamRelativeHeading()

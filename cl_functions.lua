@@ -4,6 +4,19 @@ WasPhotoTaken = N_0x0d6ca79eeebd8ca3
 SavePhoto = N_0x3dec726c25a11bac
 ClearPhoto = N_0xd801cc02177fa3f1
 
+CellCamSetHorizontalOffset = N_0x1b0b4aeed5b9b41c -- -1.0 to 1.0 but there's actually no limit
+CellCamSetVerticalOffset = N_0x3117d84efa60f77b -- 0.0 to 2.0
+CellCamSetRoll = N_0x15e69e2802c24b8d -- -1.0 to 1.0
+CellCamSetDistance = N_0x53f4892d18ec90a4 -- -1.0 to 1.0
+
+CellCamSetHeadY = N_0xd6ade981781fca09 -- -1.0 to 1.0
+CellCamSetHeadRoll = N_0xf1e22dc13f5eebad -- -1.0 to 1.0
+CellCamSetHeadHeight = N_0x466da42c89865553 -- -1.0 to 0.0
+
+function math.clamp(value, minClamp, maxClamp)
+	return math.min(maxClamp, math.max(value, minClamp))
+end
+
 function chatMessage(msg)
 	TriggerEvent('chatMessage', '', {0, 0, 0}, msg)
 end
