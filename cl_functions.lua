@@ -69,20 +69,39 @@ phone = false
 phoneId = 0
 
 phones = {
-[0] = "Michael's",
-[1] = "Trevor's",
-[2] = "Franklin's",
-[4] = "Prologue"
+	[0] = "Michael's",
+	[1] = "Trevor's",
+	[2] = "Franklin's",
+	[4] = "Prologue"
 }
 
 days = {
-[1] = "Mon",
-[2] = "Tue",
-[3] = "Wed",
-[4] = "Thu",
-[5] = "Fri",
-[6] = "Sat",
-[7] = "Sun"
+	[1] = "Mon",
+	[2] = "Tue",
+	[3] = "Wed",
+	[4] = "Thu",
+	[5] = "Fri",
+	[6] = "Sat",
+	[7] = "Sun"
+}
+
+filters = {
+	"phone_cam",
+	"phone_cam1",
+	"phone_cam10",
+	"phone_cam11",
+	"phone_cam12",
+	"phone_cam13",
+	"phone_cam2",
+	"phone_cam3",
+	"phone_cam3_REMOVED",
+	"phone_cam4",
+	"phone_cam5",
+	"phone_cam6",
+	"phone_cam7",
+	"phone_cam8",
+	"phone_cam8_REMOVED",
+	"phone_cam9",
 }
 
 iFruitDefault = 	"Phone_Wallpaper_ifruitdefault"

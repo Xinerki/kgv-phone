@@ -414,6 +414,8 @@ function OpenApp(app)
 			local headRoll = 0.0
 			local headHeight = 0.0
 			
+			local currentTimecyc = 0
+			
 			while true do Wait(0)
 				HideHudComponentThisFrame(7)
 				HideHudComponentThisFrame(8)
@@ -461,6 +463,30 @@ function OpenApp(app)
 				-- rz = (z+rotz)
 				-- SetEntityRotation(PlayerPedId(), x,y,rz+180.0)
 
+				if (IsControlJustPressed(3, 174)) then -- LEFT
+					MoveFinger(3)
+					currentTimecyc = currentTimecyc - 1
+					if currentTimecyc < -1 then currentTimecyc = #filters end
+					if currentTimecyc == 0 then 
+						ClearTimecycleModifier() 
+					else
+						SetTimecycleModifier(filters[currentTimecyc])
+					end
+				end
+
+				if (IsControlJustPressed(3, 175)) then -- RIGHT
+					MoveFinger(4)
+					currentTimecyc = currentTimecyc + 1
+					if currentTimecyc == #filters then currentTimecyc = 0 end
+					
+					if currentTimecyc == 0 then 
+						ClearTimecycleModifier() 
+					else
+						SetTimecycleModifier(filters[currentTimecyc])
+					end
+					-- sorry
+				end
+
 				if IsControlJustPressed(3, 172) then -- UP
 					frontCam = not frontCam
 					CellFrontCamActivate(frontCam)
@@ -478,6 +504,7 @@ function OpenApp(app)
 				end
 				
 				if IsControlJustReleased(3, 177) then -- BACK
+					ClearTimecycleModifier() 
 					PlaySoundFrontend(-1, "Menu_Back", "Phone_SoundSet_Michael", 1)
 					PushScaleformMovieFunction(GlobalScaleform, "DISPLAY_VIEW")
 					PushScaleformMovieFunctionParameterInt(1) -- MENU PAGE
