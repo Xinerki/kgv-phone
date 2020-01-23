@@ -517,24 +517,26 @@ function OpenApp(app)
 				if (IsControlJustPressed(3, 174)) then -- LEFT
 					MoveFinger(3)
 					currentTimecyc = currentTimecyc - 1
-					if currentTimecyc < -1 then currentTimecyc = #filters end
+					if currentTimecyc < 0 then currentTimecyc = #filters end
 					if currentTimecyc == 0 then 
 						ClearTimecycleModifier() 
 					else
 						SetTimecycleModifier(filters[currentTimecyc])
 					end
+					DisplayHelpText("Filter Selected: " .. currentTimecyc+1, 1000)
 				end
 
 				if (IsControlJustPressed(3, 175)) then -- RIGHT
 					MoveFinger(4)
 					currentTimecyc = currentTimecyc + 1
-					if currentTimecyc == #filters then currentTimecyc = 0 end
+					if currentTimecyc > #filters then currentTimecyc = 0 end
 					
 					if currentTimecyc == 0 then 
 						ClearTimecycleModifier() 
 					else
 						SetTimecycleModifier(filters[currentTimecyc])
 					end
+					DisplayHelpText("Filter Selected: " .. currentTimecyc+1, 1000)
 					-- sorry
 				end
 

@@ -17,6 +17,42 @@ function math.clamp(value, minClamp, maxClamp)
 	return math.min(maxClamp, math.max(value, minClamp))
 end
 
+function lerp(x1, x2, t) 
+    return x1 + (x2 - x1) * t
+end
+
+-- function DrawSelectionMsg(text, duration) -- unused
+	-- Citizen.CreateThread(function()
+		
+		-- local duration = duration or 1000
+		
+		-- local startTime = GetGameTimer()
+		-- local endTime = GetGameTimer() + duration
+		
+		-- while GetGameTimer() < endTime do 
+			-- Wait(0)
+			
+			-- local now = GetGameTimer()
+			-- local scale = (endTime - now) / duration
+			
+			-- local yPos = lerp(0.0, 0.1, scale)
+			
+			-- SetTextFont(0)
+			-- SetTextProportional(1)
+			-- SetTextScale(0.0, 0.55)
+			-- SetTextColour(255, 255, 255, math.max(0, math.floor(scale * 255)))
+			-- SetTextDropshadow(0, 0, 0, 0, 255)
+			-- SetTextEdge(2, 0, 0, 0, 150)
+			-- SetTextDropShadow()
+			-- SetTextOutline()
+			-- SetTextEntry("STRING")
+			-- SetTextCentre(1)
+			-- AddTextComponentString(text)
+			-- DrawText(0.5, yPos)
+		-- end
+	-- end)
+-- end
+
 function chatMessage(msg)
 	TriggerEvent('chatMessage', '', {0, 0, 0}, msg)
 end
