@@ -1,13 +1,62 @@
 
 frontCam = false
+doingGesture = false
 
 messageCount = 0
 
 loadedContacts = {}
-
 pedHeadshots = {}
 
 RegisterNetEvent('phone_server:receiveMessage')
+
+-- INPUT_REPLAY_CYCLEMARKERLEFT = 312
+-- INPUT_REPLAY_CYCLEMARKERRIGHT = 313
+-- INPUT_CELLPHONE_CAMERA_EXPRESSION = 186
+
+function loopGestures()
+	currentGestureDict = 0
+	doingGesture = false
+	while frontCam do Wait(0)
+		if not IsControlPressed(0, 186) then
+			if IsControlJustPressed(0, 313) then
+				currentGestureDict = (currentGestureDict + 1) % #gestureDicts
+				DisplayHelpText("Action Selected:\n" .. gestureNames[currentGestureDict+1], 1000)
+			end
+			if IsControlJustPressed(0, 312) then
+				if currentGestureDict-1 < 0 then 
+					currentGestureDict = #gestureDicts-1
+				else
+					currentGestureDict = (currentGestureDict - 1)
+				end
+				DisplayHelpText("Action Selected:\n" .. gestureNames[currentGestureDict+1], 1000)
+			end
+		end
+	
+		gestureDir = "anim@mp_player_intselfie" .. gestureDicts[currentGestureDict+1]
+		
+		if IsControlPressed(0, 186) then
+			if doingGesture == false then
+					doingGesture = true
+				if not HasAnimDictLoaded(gestureDir) then
+					RequestAnimDict(gestureDir)
+					repeat Wait(0) until HasAnimDictLoaded(gestureDir)
+				end
+				TaskPlayAnim(PlayerPedId(), gestureDir, "enter", 4.0, 4.0, -1, 128, -1.0, false, false, false)
+				Wait(GetAnimDuration(gestureDir, "enter")*1000)
+				TaskPlayAnim(PlayerPedId(), gestureDir, "idle_a", 8.0, 4.0, -1, 129, -1.0, false, false, false)
+			end
+		else
+			if doingGesture == true then
+				doingGesture = false
+				TaskPlayAnim(PlayerPedId(), gestureDir, "exit", 4.0, 4.0, -1, 128, -1.0, false, false, false)
+				Wait(GetAnimDuration(gestureDir, "exit")*1000)
+				RemoveAnimDict(gestureDir)
+			end
+		end
+	end
+	TaskPlayAnim(PlayerPedId(), "", "", 4.0, 4.0, -1, 128, -1.0, false, false, false)
+	RemoveAnimDict(gestureDir)
+end
 
 function OpenApp(app)
 	Citizen.CreateThread(function()
@@ -416,6 +465,8 @@ function OpenApp(app)
 			
 			local currentTimecyc = 0
 			
+			currentGestureDict = 0
+			
 			while true do Wait(0)
 				HideHudComponentThisFrame(7)
 				HideHudComponentThisFrame(8)
@@ -490,6 +541,7 @@ function OpenApp(app)
 				if IsControlJustPressed(3, 172) then -- UP
 					frontCam = not frontCam
 					CellFrontCamActivate(frontCam)
+					Citizen.CreateThread(loopGestures)
 				end
 
 				if (IsControlJustPressed(3, 176)) then -- SELECT

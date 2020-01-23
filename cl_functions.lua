@@ -21,6 +21,12 @@ function chatMessage(msg)
 	TriggerEvent('chatMessage', '', {0, 0, 0}, msg)
 end
 
+function BusyspinnerOn(string)
+	BeginTextCommandBusyspinnerOn("STRING")
+	AddTextComponentString(string)
+	EndTextCommandBusyspinnerOn(1)
+end
+
 function Notification(text,duration)
     Citizen.CreateThread(function()
         SetNotificationTextEntry("STRING")
@@ -29,6 +35,12 @@ function Notification(text,duration)
         Citizen.Wait(duration)
         RemoveNotification(Notification)
     end)
+end
+
+function DisplayHelpText(helpText, time)
+	BeginTextCommandDisplayHelp("STRING")
+	AddTextComponentSubstringWebsite(helpText)
+	EndTextCommandDisplayHelp(0, 0, 1, time or -1)
 end
 
 function GetPlayerFromName(namePart)
@@ -102,6 +114,38 @@ filters = {
 	"phone_cam8",
 	"phone_cam8_REMOVED",
 	"phone_cam9",
+}
+
+
+-- TODO: maybe replace mp gestures with sp character gestures?
+
+-- anim@mp_player_intselfie ..
+gestureDicts = {
+	"blow_kiss",
+	"dock",
+	"jazz_hands",
+	"the_bird",
+	"thumbs_up",
+	"wank",
+}
+
+-- gestureNames = {
+	-- "Blow Kiss",
+	-- "Dock",
+	-- "Jazz Hands",
+	-- "The Bird",
+	-- "Thumbs Up",
+	-- "Wank",
+-- }
+
+-- sorry i want to name them better
+gestureNames = {
+	"Blow Kiss",
+	"OK",
+	"Arrested",
+	"FUCK",
+	"Thumbs Up",
+	"Wank",
 }
 
 iFruitDefault = 	"Phone_Wallpaper_ifruitdefault"
