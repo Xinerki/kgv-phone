@@ -330,6 +330,20 @@ function OpenApp(app)
 			repeat Wait(0) until UpdateOnscreenKeyboard() ~= 0
 			if UpdateOnscreenKeyboard() == 1 then
 				message = GetOnscreenKeyboardResult()
+			elseif UpdateOnscreenKeyboard() == 2 then
+				PlaySoundFrontend(-1, "Menu_Back", "Phone_SoundSet_Michael", 1)
+				PushScaleformMovieFunction(GlobalScaleform, "DISPLAY_VIEW")
+				PushScaleformMovieFunctionParameterInt(1) -- MENU PAGE
+				PushScaleformMovieFunctionParameterInt(4) -- INDEX
+				PopScaleformMovieFunctionVoid()
+				SetPhoneLean(false)
+				SetMobilePhoneRotation(-90.0, 0.0, 0.0)
+				Wait(500)
+				currentColumn = 1
+				currentRow = 1
+				currentIndex = 1
+				currentApp = 1
+				return
 			end
 			
 			SetPhoneLean(true)
