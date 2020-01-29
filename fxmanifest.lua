@@ -9,7 +9,7 @@ url 'https://github.com/Xinerki/kgv-phone'
 client_scripts {
     'client.lua',
     'contacts.lua',
-	'cl_functions.lua'
+    'cl_functions.lua'
 }
 
 server_script 'server.lua'
