@@ -481,6 +481,8 @@ function OpenApp(app)
 			
 			currentGestureDict = 0
 			
+			flashEnabled = false
+			
 			while true do Wait(0)
 				HideHudComponentThisFrame(7)
 				HideHudComponentThisFrame(8)
@@ -527,6 +529,16 @@ function OpenApp(app)
 				-- local rotz=GetGameplayCamRelativeHeading()
 				-- rz = (z+rotz)
 				-- SetEntityRotation(PlayerPedId(), x,y,rz+180.0)
+				
+				if (IsControlJustPressed(3, 23)) then -- TOGGLE FLASH
+					if flashEnabled == false then
+						flashEnabled = true
+						DisplayHelpText("⚡ FLASH ENABLED ⚡", 1000)
+					else
+						DisplayHelpText("⚡ FLASH DISABLED ⚡", 1000)
+						flashEnabled = false
+					end	
+				end	
 
 				if (IsControlJustPressed(3, 174)) then -- LEFT
 					MoveFinger(3)
@@ -561,8 +573,14 @@ function OpenApp(app)
 				end
 
 				if (IsControlJustPressed(3, 176)) then -- SELECT
+					RequestNamedPtfxAsset("scr_rcpaparazzo1")
 					MoveFinger(5)
-					PlaySoundFrontend(-1, "Menu_Accept", "Phone_SoundSet_Michael", 1)
+					PlaySoundFrontend(-1, "Camera_Shoot", "Phone_SoundSet_Michael", 1)
+					if not frontCam and flashEnabled then
+						UseParticleFxAsset("scr_rcpaparazzo1")
+						StartNetworkedParticleFxNonLoopedOnPedBone("scr_rcpap1_camera", PlayerPedId(), 0.0, 0.0, -0.05, 0.0, 0.0, 90.0, 57005, 1065353216, 0, 0, 0)
+						Wait(50)
+					end
 					TakePhoto()
 					if (WasPhotoTaken() and SavePhoto(-1)) then
 						-- SetLoadingPromptTextEntry("CELL_278")
