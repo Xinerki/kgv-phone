@@ -80,13 +80,13 @@ function OpenApp(app)
 					if (IsControlJustPressed(3, 172)) then -- UP
 						NavigateMenu(GlobalScaleform, 1)
 						MoveFinger(1)
-						currentRow = currentRow - 1
+						-- currentRow = currentRow - 1
 					end
 
 					if (IsControlJustPressed(3, 173)) then -- DOWN
 						NavigateMenu(GlobalScaleform, 3)
 						MoveFinger(2)
-						currentRow = currentRow + 1
+						-- currentRow = currentRow + 1
 					end
 
 					currentRow = currentRow % messageCount
@@ -457,6 +457,163 @@ function OpenApp(app)
 				end
 			end
 		end
+		
+		if app == 8 then -- SETTINGS
+		
+			AddSetting(GlobalScaleform, 1, "Theme: "..themes[theme+1])
+			AddSetting(GlobalScaleform, 2, "Background: "..wallpaperNames[wallpaper+1])
+			
+			PushScaleformMovieFunction(GlobalScaleform, "DISPLAY_VIEW")
+			PushScaleformMovieFunctionParameterInt(18) -- MENU PAGE
+			PushScaleformMovieFunctionParameterInt(0) -- INDEX
+			PopScaleformMovieFunctionVoid()
+			
+			page = 1
+			
+			while true do
+				Wait(0)
+
+				if (IsControlJustPressed(3, 172)) then -- UP
+					NavigateMenu(GlobalScaleform, 1)
+					MoveFinger(1)
+					currentRow = currentRow - 1
+					-- SetRadioToStationIndex((GetPlayerRadioStationIndex() + 1) % MaxRadioStationIndex())
+				end
+
+				if (IsControlJustPressed(3, 173)) then -- DOWN
+					NavigateMenu(GlobalScaleform, 3)
+					MoveFinger(2)
+					currentRow = currentRow + 1
+					-- SetRadioToStationIndex((GetPlayerRadioStationIndex() - 1) % MaxRadioStationIndex())
+				end
+
+				if (IsControlJustPressed(3, 174)) then -- LEFT
+					MoveFinger(3)
+					PlaySoundFrontend(-1, "Menu_Accept", "Phone_SoundSet_Michael", 1)
+					
+					if math.abs(currentRow) % 2 == 0 then
+						theme = (theme - 1) % 7
+						if theme < 1 then theme = 6 end
+						AddSetting(GlobalScaleform, 1, "Theme: "..themes[theme+1])
+						SetResourceKvpInt("KGV:PHONE:THEME", theme+1)
+
+						PushScaleformMovieFunction(GlobalScaleform, "SET_THEME")
+						PushScaleformMovieFunctionParameterInt(theme+1) -- 1-8
+						PopScaleformMovieFunctionVoid()
+						N_0x83a169eabcdb10a2(PlayerPedId(), theme)
+						
+						PushScaleformMovieFunction(GlobalScaleform, "DISPLAY_VIEW")
+						PushScaleformMovieFunctionParameterInt(18) -- MENU PAGE
+						PushScaleformMovieFunctionParameterInt(0) -- INDEX
+						PopScaleformMovieFunctionVoid()
+					elseif math.abs(currentRow) % 2 == 1 then
+						wallpaper = (wallpaper - 1) % #wallpapers
+						if wallpaper < 1 then wallpaper = (#wallpapers-1) end
+						AddSetting(GlobalScaleform, 2, "Background: "..wallpaperNames[wallpaper+1])
+						SetResourceKvpInt("KGV:PHONE:WALLPAPER", wallpaper+1)
+
+						PushScaleformMovieFunction(GlobalScaleform, "SET_BACKGROUND_CREW_IMAGE")
+						BeginTextComponent("STRING")
+						AddTextComponentSubstringPlayerName(wallpapers[wallpaper+1])
+						EndTextComponent()
+						PopScaleformMovieFunctionVoid()
+						
+						PushScaleformMovieFunction(GlobalScaleform, "DISPLAY_VIEW")
+						PushScaleformMovieFunctionParameterInt(18) -- MENU PAGE
+						PushScaleformMovieFunctionParameterInt(1) -- INDEX
+						PopScaleformMovieFunctionVoid()
+					end
+					
+				end
+
+				if (IsControlJustPressed(3, 175)) then -- RIGHT
+					MoveFinger(4)
+					PlaySoundFrontend(-1, "Menu_Accept", "Phone_SoundSet_Michael", 1)
+					
+					if math.abs(currentRow) % 2 == 0 then
+						theme = (theme + 1) % 7
+						AddSetting(GlobalScaleform, 1, "Theme: "..themes[theme+1])
+						SetResourceKvpInt("KGV:PHONE:THEME", theme+1)
+
+						PushScaleformMovieFunction(GlobalScaleform, "SET_THEME")
+						PushScaleformMovieFunctionParameterInt(theme+1) -- 1-8
+						PopScaleformMovieFunctionVoid()
+						N_0x83a169eabcdb10a2(PlayerPedId(), theme)
+						
+						PushScaleformMovieFunction(GlobalScaleform, "DISPLAY_VIEW")
+						PushScaleformMovieFunctionParameterInt(18) -- MENU PAGE
+						PushScaleformMovieFunctionParameterInt(0) -- INDEX
+						PopScaleformMovieFunctionVoid()
+					elseif math.abs(currentRow) % 2 == 1 then
+						wallpaper = (wallpaper + 1) % #wallpapers
+						AddSetting(GlobalScaleform, 2, "Background: "..wallpaperNames[wallpaper+1])
+						SetResourceKvpInt("KGV:PHONE:WALLPAPER", wallpaper+1)
+
+						PushScaleformMovieFunction(GlobalScaleform, "SET_BACKGROUND_CREW_IMAGE")
+						BeginTextComponent("STRING")
+						AddTextComponentSubstringPlayerName(wallpapers[wallpaper+1])
+						EndTextComponent()
+						PopScaleformMovieFunctionVoid()
+						
+						PushScaleformMovieFunction(GlobalScaleform, "DISPLAY_VIEW")
+						PushScaleformMovieFunctionParameterInt(18) -- MENU PAGE
+						PushScaleformMovieFunctionParameterInt(1) -- INDEX
+						PopScaleformMovieFunctionVoid()
+					end
+				end
+
+				if (IsControlJustPressed(3, 176)) then -- SELECT
+					MoveFinger(5)
+					PlaySoundFrontend(-1, "Menu_Accept", "Phone_SoundSet_Michael", 1)
+					
+					-- if math.abs(currentRow) % 2 == 0 then
+						-- theme = (theme + 1) % 7
+						-- AddSetting(GlobalScaleform, 1, "Theme: "..themes[theme+1])
+						-- SetResourceKvpInt("KGV:PHONE:THEME", theme+1)
+
+						-- PushScaleformMovieFunction(GlobalScaleform, "SET_THEME")
+						-- PushScaleformMovieFunctionParameterInt(theme+1) -- 1-8
+						-- PopScaleformMovieFunctionVoid()
+						-- N_0x83a169eabcdb10a2(PlayerPedId(), theme)
+						
+						-- PushScaleformMovieFunction(GlobalScaleform, "DISPLAY_VIEW")
+						-- PushScaleformMovieFunctionParameterInt(18) -- MENU PAGE
+						-- PushScaleformMovieFunctionParameterInt(0) -- INDEX
+						-- PopScaleformMovieFunctionVoid()
+					-- elseif math.abs(currentRow) % 2 == 1 then
+						-- wallpaper = (wallpaper + 1) % #wallpapers
+						-- AddSetting(GlobalScaleform, 2, "Background: "..wallpaperNames[wallpaper+1])
+						-- SetResourceKvpInt("KGV:PHONE:WALLPAPER", wallpaper+1)
+
+						-- PushScaleformMovieFunction(GlobalScaleform, "SET_BACKGROUND_CREW_IMAGE")
+						-- BeginTextComponent("STRING")
+						-- AddTextComponentSubstringPlayerName(wallpapers[wallpaper+1])
+						-- EndTextComponent()
+						-- PopScaleformMovieFunctionVoid()
+						
+						-- PushScaleformMovieFunction(GlobalScaleform, "DISPLAY_VIEW")
+						-- PushScaleformMovieFunctionParameterInt(18) -- MENU PAGE
+						-- PushScaleformMovieFunctionParameterInt(1) -- INDEX
+						-- PopScaleformMovieFunctionVoid()
+					-- end
+					
+				end
+
+				if IsControlJustReleased(3, 177) then -- BACK
+					PlaySoundFrontend(-1, "Menu_Back", "Phone_SoundSet_Michael", 1)
+					PushScaleformMovieFunction(GlobalScaleform, "DISPLAY_VIEW")
+					PushScaleformMovieFunctionParameterInt(1) -- MENU PAGE
+					PushScaleformMovieFunctionParameterInt(6) -- INDEX
+					PopScaleformMovieFunctionVoid()
+					Wait(500)
+					currentColumn = 0
+					currentRow = 2
+					currentIndex = 1
+					currentApp = 1
+					return
+				end
+			end
+		end
 
 		if app == 9 then -- CAMERA
 			frontCam = false
@@ -605,7 +762,7 @@ function OpenApp(app)
 					-- SetPhoneLean(false)
 					currentColumn = 1
 					currentRow = 2
-					currentIndex = 0
+					currentIndex = 1
 					currentApp = 1
 					return
 				end
@@ -675,15 +832,15 @@ Citizen.CreateThread(function()
 		Citizen.Wait(0)
 	end
 
-	SetHomeMenuApp(GlobalScaleform, 0, 2, "Texts")
-	SetHomeMenuApp(GlobalScaleform, 1, 5, "Contacts")
-	SetHomeMenuApp(GlobalScaleform, 2, 12, "To-Do List")
-	SetHomeMenuApp(GlobalScaleform, 3, 59, "Mobile Radio")
-	SetHomeMenuApp(GlobalScaleform, 4, 6, "Eyefind")
-	SetHomeMenuApp(GlobalScaleform, 5, 8, "Unknown App")
-	SetHomeMenuApp(GlobalScaleform, 6, 24, "Settings")
-	SetHomeMenuApp(GlobalScaleform, 7, 1, "Snapmatic")
-	SetHomeMenuApp(GlobalScaleform, 8, 57, "SecuroServ")
+	SetHomeMenuApp(GlobalScaleform, 0, 2, 	"Texts")
+	SetHomeMenuApp(GlobalScaleform, 1, 5, 	"Contacts")
+	SetHomeMenuApp(GlobalScaleform, 2, 12, 	"To-Do List")
+	SetHomeMenuApp(GlobalScaleform, 3, 59, 	"Mobile Radio")
+	SetHomeMenuApp(GlobalScaleform, 4, 6, 	"Eyefind")
+	SetHomeMenuApp(GlobalScaleform, 5, 8, 	"Unknown App")
+	SetHomeMenuApp(GlobalScaleform, 6, 24, 	"Settings")
+	SetHomeMenuApp(GlobalScaleform, 7, 1,	"Snapmatic")
+	SetHomeMenuApp(GlobalScaleform, 8, 57, 	"SecuroServ")
 	
 	-- 27 is an interesting [!] icon
 	-- 42 is Trackify, should work
@@ -692,15 +849,23 @@ Citizen.CreateThread(function()
 		-- SetContactRaw(GlobalScaleform, contactAmount, v.name, v.icon)
 		-- contactAmount = contactAmount + 1
 	-- end
+	
+	wallpaper = GetResourceKvpInt("KGV:PHONE:WALLPAPER")
+	if wallpaper == 0 then wallpaper = 1 end
 
-	local wallpaper = PurpleTartan
+	-- local wallpaper = PurpleTartan
 
-	RequestStreamedTextureDict(wallpaper)
-	repeat Wait(0) until HasStreamedTextureDictLoaded(wallpaper)
+	RequestStreamedTextureDict(wallpapers[wallpaper])
+	repeat Wait(0) until HasStreamedTextureDictLoaded(wallpapers[wallpaper])
+	
+	theme = GetResourceKvpInt("KGV:PHONE:THEME")
+	if theme == 0 then theme = 1 end
 
 	PushScaleformMovieFunction(GlobalScaleform, "SET_THEME")
-	PushScaleformMovieFunctionParameterInt(6) -- 1-8
+	PushScaleformMovieFunctionParameterInt(theme) -- 1-8
 	PopScaleformMovieFunctionVoid()
+	
+	theme = theme - 1
 
 	PushScaleformMovieFunction(GlobalScaleform, "SET_SLEEP_MODE")
 	PushScaleformMovieFunctionParameterInt(0)
@@ -714,17 +879,16 @@ Citizen.CreateThread(function()
 
 	PushScaleformMovieFunction(GlobalScaleform, "SET_BACKGROUND_CREW_IMAGE")
 	BeginTextComponent("STRING")
-	AddTextComponentSubstringPlayerName(wallpaper)
+	AddTextComponentSubstringPlayerName(wallpapers[wallpaper])
 	EndTextComponent()
 	PopScaleformMovieFunctionVoid()
 
-	PushScaleformMovieFunction(GlobalScaleform, "SET_BACKGROUND_IMAGE")
-	BeginTextComponent("STRING")
-	AddTextComponentSubstringPlayerName(wallpaper)
-	EndTextComponent()
-	PopScaleformMovieFunctionVoid()
+	-- PushScaleformMovieFunction(GlobalScaleform, "SET_BACKGROUND_IMAGE")
+	-- PushScaleformMovieFunctionParameterInt(wallpaper)
+	-- PushScaleformMovieFunctionParameterBool(false)
+	-- PopScaleformMovieFunctionVoid()
 
-	SetSoftKeys(GlobalScaleform, 2, 19, 255, 255, 255)
+	SetSoftKeys(GlobalScaleform, 2, 19, 255, 255, 255) -- never works idk
 
 	-- PushScaleformMovieFunction(GlobalScaleform, "SET_SOFT_KEYS")
 	-- PushScaleformMovieFunctionParameterInt(GlobalScaleform, 0)
@@ -752,7 +916,7 @@ Citizen.CreateThread(function()
 			SetPedConfigFlag(PlayerPedId(), 242, not true)
 			SetPedConfigFlag(PlayerPedId(), 243, not true)
 			SetPedConfigFlag(PlayerPedId(), 244, true)
-			N_0x83a169eabcdb10a2(PlayerPedId(), 4-1)
+			N_0x83a169eabcdb10a2(PlayerPedId(), theme-1)
 			
 			DisableControlAction(2, 21, true)
 

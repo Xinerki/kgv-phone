@@ -203,6 +203,58 @@ Orange8Bit = 		"Phone_Wallpaper_orange8bit"
 OrangeTriangles = 	"Phone_Wallpaper_orangetriangles"
 PurpleTartan =		"Phone_Wallpaper_purpletartan"
 
+wallpapers = {
+	"Phone_Wallpaper_ifruitdefault",
+	"Phone_Wallpaper_badgerdefault",
+	"Phone_Wallpaper_bittersweet",
+	"Phone_Wallpaper_purpleglow",
+	"Phone_Wallpaper_greensquares",
+	"Phone_Wallpaper_orangeherringbone",
+	"Phone_Wallpaper_orangehalftone",
+	"Phone_Wallpaper_greentriangles",
+	"Phone_Wallpaper_greenshards",
+	"Phone_Wallpaper_blueangles",
+	"Phone_Wallpaper_blueshards",
+	"Phone_Wallpaper_bluetriangles",
+	"Phone_Wallpaper_bluecircles",
+	"Phone_Wallpaper_diamonds",
+	"Phone_Wallpaper_greenglow",
+	"Phone_Wallpaper_orange",
+	"Phone_Wallpaper_orangetriangles",
+	"Phone_Wallpaper_purpletartan",
+}
+
+wallpaperNames = {
+	"iFruit",
+	"Badger",
+	"Bittersweet",
+	"Purple Glow",
+	"Green Squares",
+	"Orange Herring Bone",
+	"Orange Halftone",
+	"Green Triangles",
+	"Green Shards",
+	"Blue Angles",
+	"Blue Shards",
+	"Blue Triangles",
+	"Blue Circles",
+	"Diamonds",
+	"Green Glow",
+	"Orange 8-Bit",
+	"Orange Triangles",
+	"Purple Tartan",
+}
+
+themes = {
+	"Blue",
+	"Green",
+	"Red",
+	"Orange",
+	"Gray",
+	"Purple",
+	"Pink",
+}
+
 RegisterNetEvent('phone:phone')
 AddEventHandler('phone:phone', function(message)		
 	local id = tonumber(string.sub(message, 7, 8))
@@ -344,6 +396,64 @@ function SetSoftKeys(scaleform, index, icon, r, g, b)
 	-- PopScaleformMovieFunctionVoid()
 end
 
+function AddSetting(scaleform, index, setting)
+	PushScaleformMovieFunction(scaleform, "SET_DATA_SLOT")
+	PushScaleformMovieFunctionParameterInt(18)
+	
+	PushScaleformMovieFunctionParameterInt(index-1)
+	
+	-- PushScaleformMovieFunctionParameterInt(0)
+	
+	PushScaleformMovieFunctionParameterInt(0) -- UNKNOWN
+	
+	BeginTextComponent("STRING")
+	AddTextComponentSubstringPlayerName(setting)
+	EndTextComponent()
+	
+	-- BeginTextComponent("STRING")
+	-- AddTextComponentSubstringPlayerName("~l~"..setting .. " alt")
+	-- EndTextComponent()
+	
+	PushScaleformMovieFunctionParameterInt(1)
+	
+	PopScaleformMovieFunctionVoid()
+end
+
+function UpdateCoords(scaleform) -- TODO: Coords app
+	PushScaleformMovieFunction(scaleform, "SET_DATA_SLOT")
+	PushScaleformMovieFunctionParameterInt(24)
+	
+	-- PushScaleformMovieFunctionParameterInt(index-1)
+	
+	-- PushScaleformMovieFunctionParameterInt(0)
+	
+	PushScaleformMovieFunctionParameterInt(0)
+	
+	-- BeginTextComponent("STRING")
+	-- AddTextComponentSubstringPlayerName("~l~"..setting)
+	-- EndTextComponent()
+	
+	BeginTextComponent("STRING")
+	AddTextComponentSubstringPlayerName("~l~"..setting .. " alt")
+	EndTextComponent()
+	
+	PushScaleformMovieFunctionParameterFloat(150.0)
+	PushScaleformMovieFunctionParameterFloat(150.0)
+	PushScaleformMovieFunctionParameterFloat(150.0)
+	PushScaleformMovieFunctionParameterFloat(150.0)
+	PushScaleformMovieFunctionParameterFloat(150.0)
+	PushScaleformMovieFunctionParameterFloat(150.0)
+	PushScaleformMovieFunctionParameterFloat(150.0)
+	PushScaleformMovieFunctionParameterFloat(150.0)
+	PushScaleformMovieFunctionParameterFloat(150.0)
+	PushScaleformMovieFunctionParameterFloat(150.0)
+	PushScaleformMovieFunctionParameterFloat(150.0)
+	PushScaleformMovieFunctionParameterFloat(150.0)
+	PushScaleformMovieFunctionParameterFloat(150.0)
+	
+	PopScaleformMovieFunctionVoid()
+end
+
 function AddMessage(scaleform, index, email, messageTopic, sending)
 	PushScaleformMovieFunction(scaleform, "SET_DATA_SLOT")
 	PushScaleformMovieFunctionParameterInt(8)
@@ -359,11 +469,11 @@ function AddMessage(scaleform, index, email, messageTopic, sending)
 	PushScaleformMovieFunctionParameterInt(0)
 	
 	BeginTextComponent("STRING")
-	AddTextComponentSubstringPlayerName(messageTopic)
+	AddTextComponentSubstringPlayerName("~l~"..messageTopic)
 	EndTextComponent()
 	
 	BeginTextComponent("STRING")
-	AddTextComponentSubstringPlayerName(email)
+	AddTextComponentSubstringPlayerName("~l~"..email)
 	EndTextComponent()
 	
 	PopScaleformMovieFunctionVoid()

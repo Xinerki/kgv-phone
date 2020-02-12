@@ -13,6 +13,9 @@
 -- local dui = GetDuiHandle(duiObj)
 -- local tx = CreateRuntimeTextureFromDuiHandle(txd, 'CHAR_LINUS', dui)
 
+local txd = CreateRuntimeTxd('CHAR_DOMKA')
+local tx = CreateRuntimeTextureFromImage(txd, 'CHAR_DOMKA', "domka.png")
+
 contacts = {
 	-- result from calling linus:
 	-- he hangs up and sends a text message with a randomize "tech tip"
@@ -22,6 +25,10 @@ contacts = {
 		-- name = "LinusTechTip", 
 		-- icon = "CHAR_LINUS",
 	-- },
+	Domka = { 
+		name = "Domka", 
+		icon = "CHAR_DOMKA",
+	},
 	-- Cole = {
 		-- name = "Cole", 
 		-- icon = "CHAR_FILMNOIR",

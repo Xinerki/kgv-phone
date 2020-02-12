@@ -6,6 +6,8 @@ description 'A vanilla phone resource built on scaleforms.'
 author 'Xinerki - https://github.com/Xinerki/'
 url 'https://github.com/Xinerki/kgv-phone'
 
+file 'domka.png'
+
 client_scripts {
     'client.lua',
     'contacts.lua',
