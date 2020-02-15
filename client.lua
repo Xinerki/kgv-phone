@@ -687,7 +687,7 @@ function OpenApp(app)
 				-- rz = (z+rotz)
 				-- SetEntityRotation(PlayerPedId(), x,y,rz+180.0)
 				
-				if (IsControlJustPressed(3, 23)) then -- TOGGLE FLASH
+				if (IsControlJustPressed(3, 23) and frontCam == false) then -- TOGGLE FLASH
 					if flashEnabled == false then
 						flashEnabled = true
 						DisplayHelpText("⚡ FLASH ENABLED ⚡", 1000)
