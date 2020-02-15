@@ -21,6 +21,6 @@ If you want to contribute to the resource, do so with caution, as the code is a 
 - [ ] Contact interaction system (NOT PLAYERS) to allow calling and executing functions defined on contacts
 - [ ] Exported functions for contact usage
 - [ ] Basic animations
-- [ ] Settings app and phone customization
+- [x] Settings app and phone customization
 - [ ] More todo entries
 - [ ] Easter eggs
