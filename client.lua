@@ -916,7 +916,7 @@ Citizen.CreateThread(function()
 			SetPedConfigFlag(PlayerPedId(), 242, not true)
 			SetPedConfigFlag(PlayerPedId(), 243, not true)
 			SetPedConfigFlag(PlayerPedId(), 244, true)
-			N_0x83a169eabcdb10a2(PlayerPedId(), theme-1)
+			N_0x83a169eabcdb10a2(PlayerPedId(), theme)
 			
 			DisableControlAction(2, 21, true)
 
