@@ -1,6 +1,8 @@
 
 TakePhoto = N_0xa67c35c56eb1bd9d
+-- TakePhoto = N_0x759650634f07b6b4
 WasPhotoTaken = N_0x0d6ca79eeebd8ca3
+-- WasPhotoTaken = N_0xcb82a0bf0e3e3265
 SavePhoto = N_0x3dec726c25a11bac
 ClearPhoto = N_0xd801cc02177fa3f1
 
@@ -12,6 +14,12 @@ CellCamSetDistance = N_0x53f4892d18ec90a4 -- -1.0 to 1.0
 CellCamSetHeadY = N_0xd6ade981781fca09 -- -1.0 to 1.0
 CellCamSetHeadRoll = N_0xf1e22dc13f5eebad -- -1.0 to 1.0
 CellCamSetHeadHeight = N_0x466da42c89865553 -- -1.0 to 0.0
+
+CellCamSetDofEnabled = SetMobilePhoneUnk
+
+function CellCamSetDofEnabled2(enable)
+	Citizen.InvokeNative(0xA2CCBE62CD4C91A4, enable)
+end
 
 function math.clamp(value, minClamp, maxClamp)
 	return math.min(maxClamp, math.max(value, minClamp))
@@ -133,23 +141,51 @@ days = {
 	[7] = "Sun"
 }
 
+-- filters = {
+	-- "phone_cam",
+	-- "phone_cam1",
+	-- "phone_cam10",
+	-- "phone_cam11",
+	-- "phone_cam12",
+	-- "phone_cam13",
+	-- "phone_cam2",
+	-- "phone_cam3",
+	-- "phone_cam3_REMOVED",
+	-- "phone_cam4",
+	-- "phone_cam5",
+	-- "phone_cam6",
+	-- "phone_cam7",
+	-- "phone_cam8",
+	-- "phone_cam8_REMOVED",
+	-- "phone_cam9",
+-- }
+
 filters = {
-	"phone_cam",
-	"phone_cam1",
-	"phone_cam10",
-	"phone_cam11",
-	"phone_cam12",
-	"phone_cam13",
-	"phone_cam2",
-	"phone_cam3",
-	"phone_cam3_REMOVED",
-	"phone_cam4",
-	"phone_cam5",
-	"phone_cam6",
-	"phone_cam7",
-	"phone_cam8",
-	"phone_cam8_REMOVED",
-	"phone_cam9",
+	"NG_filmic01",
+	"NG_filmic02",
+	"NG_filmic03",
+	"NG_filmic04",
+	"NG_filmic05",
+	"NG_filmic06",
+	"NG_filmic07",
+	"NG_filmic08",
+	"NG_filmic09",
+	"NG_filmic10",
+	"NG_filmic11",
+	"NG_filmic12",
+	"NG_filmic13",
+	"NG_filmic14",
+	"NG_filmic15",
+	"NG_filmic16",
+	"NG_filmic17",
+	"NG_filmic18",
+	"NG_filmic19",
+	"NG_filmic20",
+	"NG_filmic21",
+	"NG_filmic22",
+	"NG_filmic23",
+	"NG_filmic24",
+	"NG_filmic25",
 }
 
 
