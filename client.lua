@@ -1,7 +1,7 @@
 
 frontCam = false
 doingGesture = false
-
+alternateBrowserControl = false
 messageCount = 0
 
 loadedContacts = {}
@@ -363,24 +363,35 @@ function OpenApp(app)
 					tx = CreateRuntimeTextureFromDuiHandle(txd, 'kgv_phone_tex', dui)
 				end
 				
-				if (IsControlPressed(3, 172)) then -- UP
-					MoveFinger(1)
-					cursorX = cursorX + cursorSpeed
-				end
+				if alternateBrowserControl then
+					DisableControlAction(0, 1)
+					DisableControlAction(0, 2)
+				
+					local mouseX = GetDisabledControlNormal(0, 1) * cursorSpeed
+					local mouseY = GetDisabledControlNormal(0, 2) * cursorSpeed
+					
+					cursorX = cursorX - mouseY
+					cursorY = cursorY + mouseX
+				else
+					if (IsControlPressed(3, 172)) then -- UP
+						MoveFinger(1)
+						cursorX = cursorX + cursorSpeed
+					end
 
-				if (IsControlPressed(3, 173)) then -- DOWN
-					MoveFinger(2)
-					cursorX = cursorX - cursorSpeed
-				end
+					if (IsControlPressed(3, 173)) then -- DOWN
+						MoveFinger(2)
+						cursorX = cursorX - cursorSpeed
+					end
 
-				if (IsControlPressed(3, 174)) then -- LEFT
-					MoveFinger(3)
-					cursorY = cursorY - cursorSpeed
-				end
+					if (IsControlPressed(3, 174)) then -- LEFT
+						MoveFinger(3)
+						cursorY = cursorY - cursorSpeed
+					end
 
-				if (IsControlPressed(3, 175)) then -- RIGHT
-					MoveFinger(4)
-					cursorY = cursorY + cursorSpeed
+					if (IsControlPressed(3, 175)) then -- RIGHT
+						MoveFinger(4)
+						cursorY = cursorY + cursorSpeed
+					end
 				end
 
 				if (IsControlJustPressed(3, 180)) then -- SCROLL DOWN
@@ -462,6 +473,7 @@ function OpenApp(app)
 		
 			AddSetting(GlobalScaleform, 1, "Theme: "..themes[theme])
 			AddSetting(GlobalScaleform, 2, "Background: "..wallpaperNames[wallpaper])
+			AddSetting(GlobalScaleform, 3, "Browser control: "..GetControlModeName(alternateBrowserControl))
 			
 			PushScaleformMovieFunction(GlobalScaleform, "DISPLAY_VIEW")
 			PushScaleformMovieFunctionParameterInt(18) -- MENU PAGE
@@ -470,6 +482,8 @@ function OpenApp(app)
 			
 			page = 1
 			
+			currentRow = 0
+			
 			while true do
 				Wait(0)
 
@@ -477,21 +491,22 @@ function OpenApp(app)
 					NavigateMenu(GlobalScaleform, 1)
 					MoveFinger(1)
 					currentRow = currentRow - 1
-					-- SetRadioToStationIndex((GetPlayerRadioStationIndex() + 1) % MaxRadioStationIndex())
+					if currentRow < 0 then currentRow = #settings - 1 end
 				end
 
 				if (IsControlJustPressed(3, 173)) then -- DOWN
 					NavigateMenu(GlobalScaleform, 3)
 					MoveFinger(2)
 					currentRow = currentRow + 1
-					-- SetRadioToStationIndex((GetPlayerRadioStationIndex() - 1) % MaxRadioStationIndex())
+					if currentRow >= #settings then currentRow = 0 end
 				end
+				
 
 				if (IsControlJustPressed(3, 174)) then -- LEFT
 					MoveFinger(3)
 					PlaySoundFrontend(-1, "Menu_Accept", "Phone_SoundSet_Michael", 1)
 					
-					if math.abs(currentRow) % 2 == 0 then
+					if currentRow == 0 then
 						theme = theme - 1
 						if theme < 1 then theme = #themes end
 						AddSetting(GlobalScaleform, 1, "Theme: "..themes[theme])
@@ -506,7 +521,7 @@ function OpenApp(app)
 						PushScaleformMovieFunctionParameterInt(18) -- MENU PAGE
 						PushScaleformMovieFunctionParameterInt(0) -- INDEX
 						PopScaleformMovieFunctionVoid()
-					elseif math.abs(currentRow) % 2 == 1 then
+					elseif currentRow == 1 then
 						wallpaper = wallpaper - 1
 						if wallpaper < 1 then wallpaper = #wallpapers end
 						AddSetting(GlobalScaleform, 2, "Background: "..wallpaperNames[wallpaper])
@@ -543,7 +558,7 @@ function OpenApp(app)
 					MoveFinger(4)
 					PlaySoundFrontend(-1, "Menu_Accept", "Phone_SoundSet_Michael", 1)
 					
-					if math.abs(currentRow) % 2 == 0 then
+					if currentRow == 0 then
 						theme = theme + 1
 						if theme > #themes then theme = 1 end
 						AddSetting(GlobalScaleform, 1, "Theme: "..themes[theme])
@@ -558,7 +573,7 @@ function OpenApp(app)
 						PushScaleformMovieFunctionParameterInt(18) -- MENU PAGE
 						PushScaleformMovieFunctionParameterInt(0) -- INDEX
 						PopScaleformMovieFunctionVoid()
-					elseif math.abs(currentRow) % 2 == 1 then
+					elseif currentRow == 1 then
 						wallpaper = wallpaper+ 1
 						if wallpaper > #wallpapers then wallpaper = 1 end
 						AddSetting(GlobalScaleform, 2, "Background: "..wallpaperNames[wallpaper])
@@ -580,6 +595,20 @@ function OpenApp(app)
 				if (IsControlJustPressed(3, 176)) then -- SELECT
 					MoveFinger(5)
 					PlaySoundFrontend(-1, "Menu_Accept", "Phone_SoundSet_Michael", 1)
+
+					print(currentRow)
+					
+					if currentRow == 2 then
+						alternateBrowserControl = not alternateBrowserControl
+						AddSetting(GlobalScaleform, 3, "Browser control: "..GetControlModeName(alternateBrowserControl))
+						SetResourceKvpInt("KGV:PHONE:BROWSERCONTROL", GetControlModeBool(alternateBrowserControl))
+						print(GetControlModeName(alternateBrowserControl))
+						
+						PushScaleformMovieFunction(GlobalScaleform, "DISPLAY_VIEW")
+						PushScaleformMovieFunctionParameterInt(18) -- MENU PAGE
+						PushScaleformMovieFunctionParameterInt(2) -- INDEX
+						PopScaleformMovieFunctionVoid()
+					end
 					
 					-- if math.abs(currentRow) % 2 == 0 then
 						-- theme = (theme + 1) % 7
@@ -897,6 +926,8 @@ Citizen.CreateThread(function()
 		-- SetContactRaw(GlobalScaleform, contactAmount, v.name, v.icon)
 		-- contactAmount = contactAmount + 1
 	-- end
+	
+	alternateBrowserControl = GetResourceKvpInt("KGV:PHONE:BROWSERCONTROL") == 1
 	
 	wallpaper = GetResourceKvpInt("KGV:PHONE:WALLPAPER")
 	if wallpaper > #wallpapers then wallpaper = 1 end

@@ -61,6 +61,20 @@ end
 	-- end)
 -- end
 
+-- hacky ree
+function GetControlModeName(mode)
+	if mode == true then
+		return "Mouse"
+	end
+	return "Arrows"
+end
+function GetControlModeBool(mode)
+	if mode == true then
+		return 1
+	end
+	return false
+end
+
 function chatMessage(msg)
 	TriggerEvent('chatMessage', '', {0, 0, 0}, msg)
 end
@@ -432,7 +446,12 @@ function SetSoftKeys(scaleform, index, icon, r, g, b)
 	-- PopScaleformMovieFunctionVoid()
 end
 
-function AddSetting(scaleform, index, setting)
+settings = {}
+
+function AddSetting(scaleform, index, setting) -- page, index, unk, name, ...
+	
+	settings[index] = setting -- hacky counter
+
 	PushScaleformMovieFunction(scaleform, "SET_DATA_SLOT")
 	PushScaleformMovieFunctionParameterInt(18)
 	
@@ -450,7 +469,7 @@ function AddSetting(scaleform, index, setting)
 	-- AddTextComponentSubstringPlayerName("~l~"..setting .. " alt")
 	-- EndTextComponent()
 	
-	PushScaleformMovieFunctionParameterInt(1)
+	-- PushScaleformMovieFunctionParameterInt(1)
 	
 	PopScaleformMovieFunctionVoid()
 end
