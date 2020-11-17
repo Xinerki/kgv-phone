@@ -689,6 +689,8 @@ function OpenApp(app)
 			currentGestureDict = 0
 			
 			flashEnabled = false
+			dofEnabled = false
+			Citizen.InvokeNative(0xA2CCBE62CD4C91A4, SetMobilePhoneUnk(dofEnabled))
 			
 			while true do Wait(0)
 				HideHudComponentThisFrame(7)
@@ -739,12 +741,23 @@ function OpenApp(app)
 				
 				if (IsControlJustPressed(3, 23) and frontCam == false) then -- TOGGLE FLASH
 					if flashEnabled == false then
-						flashEnabled = true
 						DisplayHelpText("⚡ FLASH ENABLED ⚡", 1000)
+						flashEnabled = true
 					else
 						DisplayHelpText("⚡ FLASH DISABLED ⚡", 1000)
 						flashEnabled = false
-					end	
+					end
+				end	
+				
+				if (IsControlJustPressed(3, 29) and frontCam == true) then -- TOGGLE DOF
+					if dofEnabled == false then
+						DisplayHelpText("DEPTH OF FIELD ENABLED", 1000)
+						dofEnabled = true
+					else
+						DisplayHelpText("DEPTH OF FIELD DISABLED", 1000)
+						dofEnabled = false
+					end
+					Citizen.InvokeNative(0xA2CCBE62CD4C91A4, SetMobilePhoneUnk(dofEnabled))
 				end	
 
 				if (IsControlJustPressed(3, 174)) then -- LEFT

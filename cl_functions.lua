@@ -113,7 +113,8 @@ end
 
 function ReceiveMessage(sender, message)
 	if not pedHeadshots[sender] then
-		handle = N_0x953563ce563143af(GetPlayerFromName(sender))
+		-- handle = N_0x953563ce563143af(GetPlayerFromName(sender))
+		handle = RegisterPedheadshot(GetPlayerFromName(sender))
 		if IsPedheadshotValid(handle) then
 			repeat Wait(0) until IsPedheadshotReady(handle)
 			txdString = GetPedheadshotTxdString(handle)
